@@ -3,8 +3,8 @@ class ApplicationController < ActionController::Base
   # def get_jobs
   #   puts "I am inside"
 
-  #     base_url = 'http://www.garysguide.com'
-  #     main_url = "#{base_url}/jobs?category=programming&type=region=newyork"
+  #     base_url = ''
+  #     main_url = "#{base_url}/"
   #     data = data_scraper(main_url)
 
   #     all_sections = data.css('table > tr > td > table > tr > td:nth-child(3) > table > tr')
@@ -24,7 +24,7 @@ class ApplicationController < ActionController::Base
       @title="Web Scrapper Application"
       puts " ENTERING GET ITEMS CODE ----------------"
 
-      date, role, url, company, array_of_jobs = '', '', '', '', []
+      # date, role, url, company, array_of_jobs = '', '', '', '', []
 
       offer_tile_category_tag, offer_tile_name, offer_tile_description,offer_tile_price=''
 
@@ -142,11 +142,35 @@ end
     browser.element(css: ".merchant-offers .merchant-menu-category").wait_until(&:present?)
     js_rendered_content = browser.element(css: ".merchant-offers .merchant-menu-category")
 
-     
+
+
+    
      puts "******************************************"
      puts js_rendered_content.to_yaml
 
-     puts "SIZE--------------------->"+js_rendered_content.size.to_s
+     #puts "SIZE--------------------->"+js_rendered_content.size
+     puts "******************************************"
+     rendered_content=browser.elements(:class=>"merchant-menu-category")
+     rendered_content_first=browser.elements(:class=>"merchant-menu-category").first.html
+     rendered_content_size=browser.elements(:class=>"merchant-menu-category").size
+     puts rendered_content_size
+     puts rendered_content
+
+     array_of_items=[]
+     #open("page_#{i}.html", "w"){ |f| f.puts browser.html }
+
+     puts "******************************************"
+
+     rendered_content.each_with_index do |section, section_index|
+
+        puts "LISTING HTML OF OUR REQUIRED ELEMENTS"
+        puts "SECTION:"+section.text
+        puts "SECTION INDEX:"+section_index.to_s
+        array_of_items << {
+                   item: section.text
+        }
+    end
+
      # browser = Watir::Browser.start url2
      #  for i in 1..20
      #      l = browser.link :text => "#{i}"
@@ -161,7 +185,9 @@ end
       # browser.goto url2
       # browser.element(tag_name: 'section')
       # browser.div(:class => "ClassicMerchantOffers").should exist
-      js_rendered_content
+      #js_rendered_content.link.click
+      js_rendered_content.html
+      array_of_items
   end
 
   def search
