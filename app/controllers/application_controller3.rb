@@ -1,10 +1,10 @@
 class ApplicationController < ActionController::Base
 
-  # def get_jobs
+  # def get_items
   #   puts "I am inside"
 
-  #     base_url = 'http://www.garysguide.com'
-  #     main_url = "#{base_url}/jobs?category=programming&type=region=newyork"
+  #     base_url = ''
+  #     main_url = "#{base_url}/"
   #     data = data_scraper(main_url)
 
   #     all_sections = data.css('table > tr > td > table > tr > td:nth-child(3) > table > tr')
@@ -24,7 +24,7 @@ class ApplicationController < ActionController::Base
       @title="Web Scrapper Application"
       puts " ENTERING GET ITEMS CODE ----------------"
 
-      date, role, url, company, array_of_jobs = '', '', '', '', []
+      #date, role, url, company, array_of_items = '', '', '', '', []
 
       offer_tile_category_tag, offer_tile_name, offer_tile_description,offer_tile_price=''
 
@@ -90,7 +90,7 @@ class ApplicationController < ActionController::Base
       #                 # #url = "#{base_url}#{job.at_css('a')['href']}"
       #             elsif job_index % 3 == 1
       #                 # company = job.text.strip
-      #                 # array_of_jobs << {
+      #                 # array_of_items << {
       #                 #     date: date,
       #                 #     role: role,
       #                 #     url: url,

@@ -1,21 +1,5 @@
 class ApplicationController < ActionController::Base
 
-  # def get_jobs
-  #   puts "I am inside"
-
-  #     base_url = ''
-  #     main_url = "#{base_url}/"
-  #     data = data_scraper(main_url)
-
-  #     all_sections = data.css('table > tr > td > table > tr > td:nth-child(3) > table > tr')
-  #     sections = all_sections.slice(2..all_sections.length)
-  #     return "hello"
-  # end
-
-  # def data_scraper(url)
-  #     Nokogiri::HTML(open(url))
-  # end
-
   def get_items
 
       input_url_received = params['input_url']
@@ -24,11 +8,9 @@ class ApplicationController < ActionController::Base
       @title="Web Scrapper Application"
       puts " ENTERING GET ITEMS CODE ----------------"
 
-      # date, role, url, company, array_of_jobs = '', '', '', '', []
-
       offer_tile_category_tag, offer_tile_name, offer_tile_description,offer_tile_price=''
 
-
+      # hard_coded_links_in_comments_for_dev
       # base_url = 'https://www.trycaviar.com'
       # main_url = "#{base_url}/peninsula/rise-pizzeria-6431" 
       # main_url="https://www.trycaviar.com/peninsula/rise-pizzeria-6431"
@@ -36,16 +18,11 @@ class ApplicationController < ActionController::Base
       main_url=input_url_received
       puts "Display main URL"+main_url
 
+       #Browsing through nokogiri and http
       data = data_scraper(main_url)
-      #Watir::Browser.new
-      # all_sections = data.css('table > tr > td > table > tr > td:nth-child(3) > table > tr')
-       #puts "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-      #puts data.to_s
-      # all_sections = data.css('h3 ul li')
-
       puts "==================================="
-       puts data.class
-       puts "==================================="
+      puts data.class
+      puts "==================================="
       # links=data.css('div.wrapper > div.merchant-content-container')
       # links=data.css('html body div > div.merchant-content-container').map(&:text)
       
@@ -62,65 +39,29 @@ class ApplicationController < ActionController::Base
        puts js
        puts "==================================="
        puts js2
-       puts"================================="
+       puts"===================================="
        puts js3
-       puts"================================="
+       puts"===================================="
 
-       
-
-      # puts all_sections.length.to_s
-      # sections = all_sections.slice(2..all_sections.length)
-      #  puts sections.to_s
-
-      # sections.each_with_index do |section, section_index|
-      #     puts "SECTION:"+section
-      #     puts "SECTION INDEX:"+section_index.to_s
-      #     puts "XXXXXXXXXXXXXXXXXXXXXXXXXX"
-
-      #     if section_index % 3 == 0
-      #         # date = section.text
-      #     elsif section_index % 3 == 1
-      #         section.css('font').each_with_index do |job, job_index|
-      #         #  puts "MY JOB INDEX :"+job_index.to_s
-      #             if job_index % 3 == 0
-      #                 # role = job.text.strip
-      #                 # # puts "--------------------------"
-      #                 # # puts "MY ROLE:"+role
-      #                 # # puts "--------------------------"
-      #                 # #url = "#{base_url}#{job.at_css('a')['href']}"
-      #             elsif job_index % 3 == 1
-      #                 # company = job.text.strip
-      #                 # array_of_jobs << {
-      #                 #     date: date,
-      #                 #     role: role,
-      #                 #     url: url,
-      #                 #     company: company
-      #                 #}
-      #             end
-      #         end
-      #     end
-      #   end
 
       #puts sections
       puts "PROGRAM EXITING AFTER SCRAPPING ><><><><><><><><><><><><><><><>"
       @result=links
 
-      #OPEN BROWSER/TAKESCREENSHOT
+      #OPEN BROWSER
      @scrapped_data=open_browser(main_url)
      
 end
 
   def data_scraper(my_url)
-      Nokogiri::HTML(open(my_url))
-      #Nokogiri::(Watir::Browser.new)
+    puts "Entered In Data Scrapper by Nokogiri Code"
+    Nokogiri::HTML(open(my_url))
   end
 
   
 
   def open_browser(url2)
-    puts "Entered In browser"
-     #browser=Watir::Browser.new :chrome, url: 'http://localhost:4444/wd/hub'
-    #  :chrome, url: "http://127.0.0.1:444/wd/hub"
+    puts "Entered In browser Opening Code"
     # Specify the driver path
     chromedriver_path = File.join(File.absolute_path('../..', File.dirname(__FILE__)),"browsers","chromedriver.exe")
     puts chromedriver_path
@@ -130,25 +71,14 @@ end
      # browser=Watir::Browser.new :chrome
      # browser.goto("https://google.com")
      # browser.close;
-
-     browser = Watir::Browser.start url2
-     # browser.element(css: ".merchant-menu-category").wait_until(&:present?)
-     # js_rendered_content = browser.element(css: ".merchant-menu-category")
-
-    # for i in 1..8
-    #   browser.elements(css: ".merchant-offers .merchant-menu-category").wait_until(&present?)
-    # end  
+    browser = Watir::Browser.start url2
 
     browser.element(css: ".merchant-offers .merchant-menu-category").wait_until(&:present?)
     js_rendered_content = browser.element(css: ".merchant-offers .merchant-menu-category")
 
-
-
     
      puts "******************************************"
      puts js_rendered_content.to_yaml
-
-     #puts "SIZE--------------------->"+js_rendered_content.size
      puts "******************************************"
      rendered_content=browser.elements(:class=>"merchant-menu-category")
      rendered_content_first=browser.elements(:class=>"merchant-menu-category").first.html
@@ -157,8 +87,6 @@ end
      puts rendered_content
 
      array_of_items=[]
-     #open("page_#{i}.html", "w"){ |f| f.puts browser.html }
-
      puts "******************************************"
 
      rendered_content.each_with_index do |section, section_index|
@@ -171,16 +99,7 @@ end
         }
     end
 
-     # browser = Watir::Browser.start url2
-     #  for i in 1..20
-     #      l = browser.link :text => "#{i}"
-     #      l.exists?
-     #      l.click
-     #      open("page_#{i}.html", "w"){ |f| f.puts browser.html }
-     #      sleep 2
-     #  end
      #puts "DRIVER LOADED"
-
       #browser.goto home_path
       # browser.goto url2
       # browser.element(tag_name: 'section')
@@ -195,3 +114,70 @@ end
 
 end
 
+#dummy methods for reference
+
+     # browser = Watir::Browser.start url2
+     #  for i in 1..20
+     #      l = browser.link :text => "#{i}"
+     #      l.exists?
+     #      l.click
+     #      open("page_#{i}.html", "w"){ |f| f.puts browser.html }
+     #      sleep 2
+     #  end
+
+
+      # def get_items
+      #   puts "I am inside"
+
+      #     base_url = ''
+      #     main_url = "#{base_url}/"
+      #     data = data_scraper(main_url)
+      #     all_sections = data.css('table > tr > td > table > tr > td:nth-child(3) > table > tr')
+      #     sections = all_sections.slice(2..all_sections.length)
+      #     return "hello"
+      # end
+
+      # def data_scraper(url)
+      #     Nokogiri::HTML(open(url))
+      # end
+
+
+      # date, role, url, company, array_of_items = '', '', '', '', []
+      # puts all_sections.length.to_s
+      # sections = all_sections.slice(2..all_sections.length)
+      # puts sections.to_s
+
+      #  data = data_scraper(main_url)
+      # all_sections = data.css('table > tr > td > table > tr > td:nth-child(3) > table > tr')
+      #puts "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+      #puts data.to_s
+      # all_sections = data.css('h3 ul li')
+
+      # sections.each_with_index do |section, section_index|
+      #     puts "SECTION:"+section
+      #     puts "SECTION INDEX:"+section_index.to_s
+      #     puts "XXXXXXXXXXXXXXXXXXXXXXXXXX"
+
+      #     if section_index % 3 == 0
+      #         # date = section.text
+      #     elsif section_index % 3 == 1
+      #         section.css('font').each_with_index do |item, item_index|
+      #         #  puts "MY ITEM INDEX :"+item_index.to_s
+      #             if item_index % 3 == 0
+      #                 # role = item.text.strip
+      #                 # # puts "--------------------------"
+      #                 # # puts "MY ROLE:"+role
+      #                 # # puts "--------------------------"
+      #                 # #url = "#{base_url}#{item.at_css('a')['href']}"
+      #             elsif item_index % 3 == 1
+      #                 # company = item.text.strip
+      #                 # array_of_item << {
+      #                 #     date: date,
+      #                 #     role: role,
+      #                 #     url: url,
+      #                 #     company: company
+      #                 #}
+      #             end
+      #         end
+      #     end
+      #   end
