@@ -1,0 +1,9 @@
+<h1>WEB SCRAPPER APPLICATION</h1>
+PLEASE ENTER A URL TO SCRAP DATA
+</br>
+
+<%= form_tag("/application/get_items", method: "get") do %>
+  <%= label_tag(:input_url, "Enter Web URL:") %>
+  <%= text_field_tag(:input_url) %>
+  <%= submit_tag("Search") %>
+<% end %>
