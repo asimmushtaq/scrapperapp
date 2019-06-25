@@ -6,6 +6,34 @@
 
 <h2>So Now we are loading data using Watir by opening up the page through chrome driver and getting them</h2>
 
-<%= @scrapped_data.to_yaml%>
+<h2>EXPECTED RESULTS</h2>
+
+<table border="1">
+  <%headers = @scrapped_data_items.flat_map(&:keys).uniq %>
+    <tr>
+      <% headers.each do |key| %>
+      <th>
+        <%=key%>
+      </th>
+
+   <%end %>
+    </tr>
+      <% @scrapped_data_items.each do |tr| %>
+        <tr>
+          <% headers.each do |key| %>
+          <td><%= tr[key]%></td>
+          <%end %>
+        </tr>
+       <% end %>
+
+</table>
+
+<h2>DATA ORGANISED ITEMS</h2>
+<pre><%= @scrapped_data_items.to_yaml %></pre>
+
+<pre><%= @scrapped_data_html.to_yaml %></pre>
+
+<h2>DATA ORGANISED FORM</h2>
+<pre><%= @scrapped_data.to_yaml %></pre>
 
 
